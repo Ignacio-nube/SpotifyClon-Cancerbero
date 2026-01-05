@@ -1,5 +1,5 @@
 import { Box, VStack, HStack, Text } from "@chakra-ui/react"
-import { Home, Search, Library, Heart, PlusCircle, Music, Play } from "lucide-react"
+import { Home, Search, Library, PlusCircle, Music, Play } from "lucide-react"
 import type { Album } from "@/types/Song"
 import { albums } from "@/data/songs"
 import { ImageWithFallback } from "./ImageWithFallback"
@@ -53,7 +53,7 @@ function AlbumItem({ album, cover, active, onClick }: AlbumItemProps) {
       transition="all 0.2s"
       onClick={onClick}
     >
-      <Box position="relative" group>
+      <Box position="relative">
         <ImageWithFallback
           src={cover}
           alt={album}

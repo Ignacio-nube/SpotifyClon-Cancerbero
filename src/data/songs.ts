@@ -5,7 +5,7 @@ const CLOUD_NAME = "doosdrcdk"
 
 // Helper para generar URL de Cloudinary para audio
 // Estructura: /songs/vida/nombre-archivo o /songs/muerte/nombre-archivo
-const cloudinaryAudio = (album: "vida" | "muerte", filename: string) => 
+const cloudinaryAudio = (_album: "vida" | "muerte", filename: string) => 
   `https://res.cloudinary.com/${CLOUD_NAME}/video/upload/${filename}`
 
 export const songs: Song[] = [

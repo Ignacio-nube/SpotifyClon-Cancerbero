@@ -60,12 +60,14 @@ const config = defineConfig({
         },
       },
     },
+    keyframes: {
+      spin: {
+        from: { transform: "rotate(0deg)" },
+        to: { transform: "rotate(360deg)" },
+      },
+    },
   },
   globalCss: {
-    "@keyframes spin": {
-      from: { transform: "rotate(0deg)" },
-      to: { transform: "rotate(360deg)" },
-    },
     "html, body": {
       bg: "surface.900",
       color: "white",
