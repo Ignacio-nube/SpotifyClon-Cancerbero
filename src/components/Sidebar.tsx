@@ -107,18 +107,15 @@ export function Sidebar({ onAlbumSelect, selectedAlbum }: SidebarProps) {
     >
       {/* Logo */}
       <Box px={4} py={4}>
-        <HStack gap={2}>
-          <Box
-            w={8}
-            h={8}
-            bg="blood.500"
+        <HStack gap={3}>
+          <ImageWithFallback
+            src="/logo.jpg"
+            alt="Logo Canserbero"
+            boxSize="40px"
             borderRadius="full"
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-          >
-            <Music size={18} color="white" />
-          </Box>
+            objectFit="cover"
+            fallbackIconSize={20}
+          />
           <Text fontSize="xl" fontWeight="bold" color="white" letterSpacing="tight">
             Canserbero
           </Text>

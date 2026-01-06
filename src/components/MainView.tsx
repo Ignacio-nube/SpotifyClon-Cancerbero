@@ -35,7 +35,7 @@ export function MainView({ selectedAlbum, onBack, onAlbumSelect }: MainViewProps
     : "Tirone José González Orama • Venezuela • Hip Hop Filosófico"
   const heroImage = selectedAlbum 
     ? getAlbumCover(selectedAlbum) 
-    : "/images/canserbero-hero.jpg"
+    : "/portada.webp"
 
   if (!displaySongs) return <Box flex={1} bg="black" />
 
