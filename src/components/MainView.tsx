@@ -80,7 +80,6 @@ export function MainView({ selectedAlbum, onBack, onAlbumSelect }: MainViewProps
                 : "rgba(0, 0, 0, 0.4)"
           }
           gradientTo="surface.500"
-          gradientStop="70%"
         />
       </Box>
 
