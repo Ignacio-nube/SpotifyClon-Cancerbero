@@ -335,6 +335,47 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
     }
   }, [handleAutoNext])
 
+  // Media Session para controles de celular (Lock Screen)
+  useEffect(() => {
+    if (!('mediaSession' in navigator)) return
+    if (!currentSong) return
+
+    // Actualizar Metadatos
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: currentSong.title,
+      artist: "Canserbero",
+      album: currentSong.album,
+      artwork: [
+        { src: currentSong.cover, sizes: '96x96', type: 'image/jpeg' },
+        { src: currentSong.cover, sizes: '128x128', type: 'image/jpeg' },
+        { src: currentSong.cover, sizes: '192x192', type: 'image/jpeg' },
+        { src: currentSong.cover, sizes: '256x256', type: 'image/jpeg' },
+        { src: currentSong.cover, sizes: '384x384', type: 'image/jpeg' },
+        { src: currentSong.cover, sizes: '512x512', type: 'image/jpeg' },
+      ]
+    })
+
+    // Configurar Acciones
+    navigator.mediaSession.setActionHandler('play', togglePlay)
+    navigator.mediaSession.setActionHandler('pause', togglePlay)
+    navigator.mediaSession.setActionHandler('previoustrack', prevSong)
+    navigator.mediaSession.setActionHandler('nexttrack', nextSong)
+    navigator.mediaSession.setActionHandler('seekto', (details) => {
+      if (details.seekTime !== undefined) {
+        seekTo(details.seekTime)
+      }
+    })
+
+    // Limpiar manejadores al cambiar canción o desmontar
+    return () => {
+      navigator.mediaSession.setActionHandler('play', null)
+      navigator.mediaSession.setActionHandler('pause', null)
+      navigator.mediaSession.setActionHandler('previoustrack', null)
+      navigator.mediaSession.setActionHandler('nexttrack', null)
+      navigator.mediaSession.setActionHandler('seekto', null)
+    }
+  }, [currentSong, togglePlay, nextSong, prevSong, seekTo])
+
   // No dependemos de progress/duration aquí para evitar re-renders masivos
   const stateVal: PlayerStateContextType = useMemo(() => ({
     currentSong,
