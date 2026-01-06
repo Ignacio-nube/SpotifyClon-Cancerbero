@@ -109,7 +109,7 @@ export function Sidebar({ onAlbumSelect, selectedAlbum }: SidebarProps) {
       <Box px={4} py={4}>
         <HStack gap={3}>
           <ImageWithFallback
-            src="/logo.jpg"
+            src="/logo.webp"
             alt="Logo Canserbero"
             boxSize="40px"
             borderRadius="full"

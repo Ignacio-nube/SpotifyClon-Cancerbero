@@ -249,7 +249,9 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
     const audio = audioRef.current
     if (!audio || !currentSong || playlist.length === 0) return
     
-    if (audio.currentTime > 3) {
+    // Si la canción lleva más de 2 segundos, reiniciamos la canción actual
+    // Si no, vamos a la canción anterior
+    if (audio.currentTime > 2) {
       audio.currentTime = 0
       return
     }
@@ -340,18 +342,20 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
     if (!('mediaSession' in navigator)) return
     if (!currentSong) return
 
+    const baseUrl = window.location.origin
+
     // Actualizar Metadatos
     navigator.mediaSession.metadata = new MediaMetadata({
       title: currentSong.title,
       artist: "Canserbero",
       album: currentSong.album,
       artwork: [
-        { src: currentSong.cover, sizes: '96x96', type: 'image/jpeg' },
-        { src: currentSong.cover, sizes: '128x128', type: 'image/jpeg' },
-        { src: currentSong.cover, sizes: '192x192', type: 'image/jpeg' },
-        { src: currentSong.cover, sizes: '256x256', type: 'image/jpeg' },
-        { src: currentSong.cover, sizes: '384x384', type: 'image/jpeg' },
-        { src: currentSong.cover, sizes: '512x512', type: 'image/jpeg' },
+        { src: baseUrl + currentSong.cover, sizes: '96x96', type: 'image/webp' },
+        { src: baseUrl + currentSong.cover, sizes: '128x128', type: 'image/webp' },
+        { src: baseUrl + currentSong.cover, sizes: '192x192', type: 'image/webp' },
+        { src: baseUrl + currentSong.cover, sizes: '256x256', type: 'image/webp' },
+        { src: baseUrl + currentSong.cover, sizes: '384x384', type: 'image/webp' },
+        { src: baseUrl + currentSong.cover, sizes: '512x512', type: 'image/webp' },
       ]
     })
 
@@ -360,20 +364,28 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
 
     // Configurar Acciones
     navigator.mediaSession.setActionHandler('play', () => {
-      audioRef.current?.play()
-      setIsPlaying(true)
+      audioRef.current?.play().then(() => setIsPlaying(true)).catch(() => {})
     })
     navigator.mediaSession.setActionHandler('pause', () => {
       audioRef.current?.pause()
       setIsPlaying(false)
     })
-    navigator.mediaSession.setActionHandler('previoustrack', prevSong)
-    navigator.mediaSession.setActionHandler('nexttrack', nextSong)
+    
+    // Forzamos que siempre haya handlers para habilitar los botones en iOS
+    navigator.mediaSession.setActionHandler('previoustrack', () => {
+        prevSong()
+    })
+    navigator.mediaSession.setActionHandler('nexttrack', () => {
+        nextSong()
+    })
     
     // También mapeamos los botones de skip de Safari a nuestras funciones de saltar canción
-    // Esto fuerza a Safari a mostrar "atrás" y "adelante" como cambio de pista
-    navigator.mediaSession.setActionHandler('seekbackward', prevSong)
-    navigator.mediaSession.setActionHandler('seekforward', nextSong)
+    navigator.mediaSession.setActionHandler('seekbackward', () => {
+        prevSong()
+    })
+    navigator.mediaSession.setActionHandler('seekforward', () => {
+        nextSong()
+    })
 
     navigator.mediaSession.setActionHandler('seekto', (details) => {
       if (details.seekTime !== undefined) {

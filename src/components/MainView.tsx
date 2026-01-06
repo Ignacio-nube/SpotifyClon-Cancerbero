@@ -44,10 +44,27 @@ export function MainView({ selectedAlbum, onBack, onAlbumSelect }: MainViewProps
       flex={1}
       h={{ base: "calc(100vh - 110px)", md: "calc(100vh - 90px)" }}
       overflow="auto"
-      bg={selectedAlbum === "Muerte" ? "linear-gradient(180deg, #2d0000 0%, #121212 30%)" : "linear-gradient(180deg, #450000 0%, #121212 30%)"}
+      bg="surface.500"
       borderRadius={{ base: "none", md: "lg" }}
       position="relative"
     >
+      {/* Background Decorator */}
+      <Box
+        position="absolute"
+        top={0}
+        left={0}
+        right={0}
+        h="400px"
+        bgGradient={selectedAlbum === "Muerte" 
+          ? "to-b" 
+          : "to-b"}
+        gradientFrom={selectedAlbum === "Muerte" ? "rgba(45, 0, 0, 0.8)" : "rgba(139, 0, 0, 0.6)"}
+        gradientTo="transparent"
+        zIndex={0}
+        pointerEvents="none"
+      />
+
+      {/* Mobile Header / Back Button */}
       {/* Mobile Header / Back Button */}
       {selectedAlbum && (
         <Box display={{ base: "block", md: "none" }} p={4} position="absolute" top={0} left={0} zIndex={10}>
