@@ -355,11 +355,26 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
       ]
     })
 
+    // Actualizar estado de reproducción para Safari/iOS
+    navigator.mediaSession.playbackState = isPlaying ? "playing" : "paused"
+
     // Configurar Acciones
-    navigator.mediaSession.setActionHandler('play', togglePlay)
-    navigator.mediaSession.setActionHandler('pause', togglePlay)
+    navigator.mediaSession.setActionHandler('play', () => {
+      audioRef.current?.play()
+      setIsPlaying(true)
+    })
+    navigator.mediaSession.setActionHandler('pause', () => {
+      audioRef.current?.pause()
+      setIsPlaying(false)
+    })
     navigator.mediaSession.setActionHandler('previoustrack', prevSong)
     navigator.mediaSession.setActionHandler('nexttrack', nextSong)
+    
+    // También mapeamos los botones de skip de Safari a nuestras funciones de saltar canción
+    // Esto fuerza a Safari a mostrar "atrás" y "adelante" como cambio de pista
+    navigator.mediaSession.setActionHandler('seekbackward', prevSong)
+    navigator.mediaSession.setActionHandler('seekforward', nextSong)
+
     navigator.mediaSession.setActionHandler('seekto', (details) => {
       if (details.seekTime !== undefined) {
         seekTo(details.seekTime)
@@ -372,9 +387,26 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
       navigator.mediaSession.setActionHandler('pause', null)
       navigator.mediaSession.setActionHandler('previoustrack', null)
       navigator.mediaSession.setActionHandler('nexttrack', null)
+      navigator.mediaSession.setActionHandler('seekbackward', null)
+      navigator.mediaSession.setActionHandler('seekforward', null)
       navigator.mediaSession.setActionHandler('seekto', null)
     }
-  }, [currentSong, togglePlay, nextSong, prevSong, seekTo])
+  }, [currentSong, isPlaying, nextSong, prevSong, seekTo])
+
+  // Actualizar la posición de la barra nativa (Safari)
+  useEffect(() => {
+    if (!('mediaSession' in navigator) || !audioRef.current) return
+    
+    try {
+      navigator.mediaSession.setPositionState({
+        duration: audioRef.current.duration || 0,
+        playbackRate: audioRef.current.playbackRate || 1,
+        position: audioRef.current.currentTime || 0,
+      })
+    } catch (e) {
+      // Algunos navegadores antiguos fallan con setPositionState
+    }
+  }, [progress, duration])
 
   // No dependemos de progress/duration aquí para evitar re-renders masivos
   const stateVal: PlayerStateContextType = useMemo(() => ({
