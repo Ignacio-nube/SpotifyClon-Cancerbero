@@ -223,8 +223,9 @@ export function PlayerBar() {
           </HStack>
         </VStack>
 
-        {/* Controles Móvil (Play/Pause y Next) */}
+        {/* Controles Móvil (Prev, Play/Pause y Next) */}
         <HStack display={{ base: "flex", md: "none" }} gap={2}>
+          <ControlButton icon={<SkipBack size={20} />} onClick={prevSong} />
           <ControlButton
             icon={isLoading ? <Box as="span" animation="spin 2s linear infinite">⏳</Box> : isPlaying ? <Pause size={20} fill="black" /> : <Play size={20} fill="black" />}
             onClick={togglePlay}

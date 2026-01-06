@@ -54,15 +54,28 @@ export function MainView({ selectedAlbum, onBack, onAlbumSelect }: MainViewProps
         top={0}
         left={0}
         right={0}
-        h="400px"
-        bgGradient={selectedAlbum === "Muerte" 
-          ? "to-b" 
-          : "to-b"}
-        gradientFrom={selectedAlbum === "Muerte" ? "rgba(45, 0, 0, 0.8)" : "rgba(139, 0, 0, 0.6)"}
-        gradientTo="transparent"
+        h="450px"
         zIndex={0}
         pointerEvents="none"
-      />
+        overflow="hidden"
+      >
+        <Box
+          position="absolute"
+          inset={0}
+          backgroundImage="url('/portada.webp')"
+          backgroundSize="cover"
+          backgroundPosition="center 20%"
+          opacity={0.3}
+          filter="blur(20px)"
+        />
+        <Box
+          position="absolute"
+          inset={0}
+          bgGradient="to-b"
+          gradientFrom={selectedAlbum === "Muerte" ? "rgba(45, 0, 0, 0.8)" : "rgba(139, 0, 0, 0.7)"}
+          gradientTo="surface.500"
+        />
+      </Box>
 
       {/* Mobile Header / Back Button */}
       {/* Mobile Header / Back Button */}
@@ -109,6 +122,8 @@ export function MainView({ selectedAlbum, onBack, onAlbumSelect }: MainViewProps
 
       {/* Hero Section */}
       <Flex
+        position="relative"
+        zIndex={1}
         direction={{ base: "column", md: "row" }}
         gap={{ base: 4, md: 6 }}
         p={{ base: 4, md: 6 }}
