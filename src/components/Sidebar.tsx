@@ -1,5 +1,5 @@
 import { Box, VStack, HStack, Text } from "@chakra-ui/react"
-import { Home, Search, Library, PlusCircle, Music, Play } from "lucide-react"
+import { Home, Search, Library, PlusCircle, Play } from "lucide-react"
 import type { Album } from "@/types/Song"
 import { albums, getAlbumCover } from "@/data/songs"
 import { ImageWithFallback } from "./ImageWithFallback"
