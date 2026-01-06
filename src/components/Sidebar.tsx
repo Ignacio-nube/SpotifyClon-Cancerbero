@@ -1,7 +1,7 @@
 import { Box, VStack, HStack, Text } from "@chakra-ui/react"
 import { Home, Search, Library, PlusCircle, Music, Play } from "lucide-react"
 import type { Album } from "@/types/Song"
-import { albums } from "@/data/songs"
+import { albums, getAlbumCover } from "@/data/songs"
 import { ImageWithFallback } from "./ImageWithFallback"
 
 interface NavItemProps {
@@ -94,15 +94,6 @@ interface SidebarProps {
 }
 
 export function Sidebar({ onAlbumSelect, selectedAlbum }: SidebarProps) {
-  const getAlbumCover = (album: Album): string => {
-    switch (album) {
-      case "Vida":
-        return "/images/vida.jpg"
-      case "Muerte":
-        return "/images/muerte.jpg"
-    }
-  }
-
   return (
     <Box
       as="aside"
