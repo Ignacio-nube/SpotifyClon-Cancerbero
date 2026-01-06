@@ -35,7 +35,7 @@ export function MainView({ selectedAlbum, onBack, onAlbumSelect }: MainViewProps
     : "Tirone José González Orama • Venezuela • Hip Hop Filosófico"
   const heroImage = selectedAlbum 
     ? getAlbumCover(selectedAlbum) 
-    : "/portada.webp"
+    : "/cancer.webp"
 
   if (!displaySongs) return <Box flex={1} bg="black" />
 
@@ -72,7 +72,13 @@ export function MainView({ selectedAlbum, onBack, onAlbumSelect }: MainViewProps
           position="absolute"
           inset={0}
           bgGradient="to-b"
-          gradientFrom={selectedAlbum === "Muerte" ? "rgba(45, 0, 0, 0.8)" : "rgba(139, 0, 0, 0.7)"}
+          gradientFrom={
+            selectedAlbum === "Muerte" 
+              ? "rgba(45, 0, 0, 0.8)" 
+              : selectedAlbum === "Vida" 
+                ? "rgba(139, 0, 0, 0.6)" 
+                : "rgba(0, 0, 0, 0.7)"
+          }
           gradientTo="surface.500"
         />
       </Box>
